@@ -2,7 +2,7 @@ import { Inngest } from "inngest";
 import { connectDB } from './db.js';
 import User from '../models/User.js';
 
-export const inngest = new Inngest({ id: "talent-iq" });
+export const inngest = new Inngest({ id: "talent-iq-two" });
 
 const syncUser = inngest.createFunction(
   { id: "sync-user" },
@@ -12,14 +12,14 @@ const syncUser = inngest.createFunction(
 
     const { id, email_addresses, first_name, last_name, image_url } = event.data;
 
-    const userUser = {
+    const newUser = {
       clerkId: id,
       email: email_addresses[0]?.email_address,
       name: `${first_name || ""} ${last_name || ""}`,
       profileImage: image_url,
     };
 
-    await User.create(userUser);
+    await User.create(newUser);
   }
 );
 
@@ -31,7 +31,7 @@ const deleteUserFromDB = inngest.createFunction(
     await connectDB();
 
     const { id } = event.data;
-    await User.deleteOne({ clerkId: id });
+        await User.deleteOne({ clerkId: id });
   }
 );
 
