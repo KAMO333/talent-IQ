@@ -1,6 +1,6 @@
 import { Inngest } from "inngest";
-import { connectDB } from './db.js';
-import User from '../models/User.js';
+import { connectDB } from "./db.js";
+import User from "../models/User.js";
 
 export const inngest = new Inngest({ id: "talent-iq-two" });
 
@@ -20,18 +20,21 @@ const syncUser = inngest.createFunction(
     };
 
     await User.create(newUser);
+
+    // todo: do sth
   }
 );
 
 const deleteUserFromDB = inngest.createFunction(
   { id: "delete-user-from-db" },
   { event: "clerk/user.deleted" },
-
   async ({ event }) => {
     await connectDB();
 
     const { id } = event.data;
-        await User.deleteOne({ clerkId: id });
+    await User.deleteOne({ clerkId: id });
+
+    // todo: do sth else
   }
 );
 
